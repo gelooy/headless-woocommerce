@@ -6,14 +6,21 @@ import { Search as SearchInput } from '@src/components/header/search';
 import { Search as SearchProps } from '@src/models/settings/search';
 import { WishList } from '@src/features/wish-list';
 import { cn } from '@src/lib/helpers/helper';
+import React, { useEffect, useState } from 'react';
 
 export const Header = () => {
   const { showSearch, setShowSearch, settings } = useSiteContext();
   const { input, results } = settings?.search as SearchProps;
+  const [isDomLoaded, setIsDomLoaded] = useState(false);
+
   const searchAttributes = {
     input,
     results,
   };
+
+  useEffect(() => {
+    setIsDomLoaded(true);
+  }, []);
 
   return (
     <>
@@ -23,7 +30,7 @@ export const Header = () => {
           'sticky top-0 z-10 !max-w-[100%]': settings?.isHeaderSticky,
         })}
       >
-        <Content content={HEADER_DATA} />
+        {isDomLoaded && <Content content={HEADER_DATA} />}
       </header>
       {showSearch && (
         <div className="search absolute w-full top-0 bg-white z-10">
